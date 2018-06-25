@@ -1,0 +1,118 @@
+{% extends 'myadmin/public/mybase.html' %}
+
+{% block title %}
+<title>商品类型列表</title>
+{% endblock %}
+
+{% block header %}
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading">
+                <span class="am-icon-home page-header-heading-icon"></span> 
+                商品类型列表 <small>Amaze UI</small>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block con %}
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">商品类型列表</div>
+
+
+                </div>
+                <div class="widget-body  am-fr">
+
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="">
+                        <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                            <div class="am-form-group tpl-table-list-select">
+                                <select name="types" data-am-selected="{btnSize: 'sm'}" style="display: none;">
+                                  <option value="all">所有类别</option>
+                                  <option value="fname">分类名</option>
+                                  <option value="fpid">所属父级</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                            <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                <input type="text" name="ffind" value='' class="am-form-field">
+                                <span class="am-input-group-btn">
+                                <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"></button>
+                              </span>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="am-u-sm-12">
+                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>分类名</th>
+                                    <th>所属父级</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in tlist %}
+                                <tr>
+                                    <td class="am-text-middle">{{ i.id }}</td>
+                                    <td class="am-text-middle">{{ i.name }}</td>
+                                    <td class="am-text-middle">{{ i.pname }}</td>
+                                    <td class="am-text-middle">
+                                        <div class="tpl-table-black-operation">
+                                            <a href="{% url 'myadmin_types_edit' %}?id={{ i.id }}">
+                                                <i class="am-icon-pencil"></i> 编辑
+                                            </a>
+                                            <a href="javascript:;" class="tpl-table-black-operation-del">
+                                                <i class="am-icon-trash"></i> 删除
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        
+                                <!-- more data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    // 删除用户
+    $('.tpl-table-black-operation-del').click(function(){
+        id = $(this).parents('tr').find('td').eq(0).text()
+        // console.log(id)
+        del_this=$(this)
+
+        $.get('{% url "myadmin_types_delete" %}',{uid:id},function(data){
+            // 提示是否删除
+            alert(data.msg)
+            if(data.code==0){
+                del_this.parents('tr').remove()
+            }
+        },'json')
+    })
+</script>
+{% endblock%}

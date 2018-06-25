@@ -1,0 +1,117 @@
+{% extends 'myadmin/public/mybase.html' %}
+
+{% block title %}
+<title>后台会员编辑</title>
+{% endblock %}
+
+{% block header %}
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading">
+                <span class="am-icon-home page-header-heading-icon"></span> 
+                会员编辑 <small>Amaze UI</small>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block con %}
+<div class="row">
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+        <div class="widget am-cf">
+            <div class="widget-body am-fr">
+
+                <form action="{% url 'myadmin_user_edit' %}?uid={{ uinfo.id }}" method="post" enctype="multipart/form-data" class="am-form tpl-form-line-form">
+                    {% csrf_token %}
+                    
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            用户名
+                        </label>
+                        <div class="am-u-sm-9">
+                            <input type="text" value="{{ uinfo.username}}" name="username"  required minlength="2" maxlength="20" class="tpl-form-input"  placeholder="请输入用户名">
+                        </div>
+                    </div>
+                  
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            邮箱
+                        </label>
+                        <div class="am-u-sm-9">
+                            <input type="text" value="{{ uinfo.email}}" name="email"  required class="tpl-form-input"  placeholder="请输入邮箱">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            手机号
+                        </label>
+                        <div class="am-u-sm-9">
+                            <input type="number" value="{{ uinfo.phone}}" name="phone" required class="tpl-form-input"  placeholder="请输入手机号">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            年龄
+                        </label>
+                        <div class="am-u-sm-9">
+                            <input type="number" value="{{ uinfo.age}}" name="age" class="tpl-form-input"  placeholder="请输入年龄">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            性别
+                        </label>
+                        <div class="am-u-sm-9">
+                            <label class="am-radio-inline"><input type="radio" value="男" name="sex" {% if uinfo.sex == '男' %} checked {% endif %}> 男</label>
+                            <label class="am-radio-inline"><input type="radio" value="女" name="sex" {% if uinfo.sex == '女' %} checked {% endif %}> 女</label>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-weibo" class="am-u-sm-3 am-form-label">上传头像 </label>
+                        
+                        <div class="am-u-sm-9">
+                            <div id="preview" class="tpl-form-file-img">
+                                <img id="imghead" src="{{ uinfo.pic }}" height="150">
+                            </div>
+                            <br>
+                            <div class="am-form-group am-form-file">
+                                <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                                <i class="am-icon-cloud-upload"></i> 添加头像</button>
+                                <input id="doc-form-file" type="file" name="pic" id="picID" accept="image/gif,image/jpeg,image/x-png" onchange="previewImage(this)">
+                            </div>
+
+                        </div>
+                    </div>
+            
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button  class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+      //图片上传预览
+        function previewImage(file)
+        {
+          var div = document.getElementById('preview');
+          if (file.files && file.files[0])
+          {
+              div.innerHTML ='<img id="imghead" style="height:150px;">';
+              var img = document.getElementById('imghead');
+              var reader = new FileReader();
+              reader.onload = function(evt){img.src = evt.target.result;}
+              reader.readAsDataURL(file.files[0]);
+          }
+        }
+
+</script>
+{% endblock%}
